@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .test-warp {
+        width: 200px;
+        height: 200px;
+        background-color: #bfc;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>www.chunyuyisheng.com</h1>
+    <h2>m.chunyuyisheng.com</h2>
+    <h3>春雨医生</h3>
+    <div class="test-warp"></div>
+
+    <script>
+      const reg = /<(h[1-6])>([\s\S]+?)<\/\1>/gi;
+      const bodyStr = document.body.innerHTML;
+      const regIteration = bodyStr.matchAll(reg);
+
+      const contents = [];
+
+      // while (res = reg.exec(bodyStr)) {
+      //   contents.push(res[2])
+      // }
+
+      for (const iterator of regIteration) {
+        contents.push(iterator[2]);
+      }
+
+      console.log(contents);
+    </script>
+    <script>
+      const el = document.querySelector(".test-warp");
+      el.addEventListener("touchstart", function () {
+        console.log(1);
+      });
+
+      el.addEventListener("touchend", function (event) {
+        // 阻止默认事件（屏蔽之后的click事件）
+        console.log(2);
+        event.preventDefault();
+      });
+
+      el.addEventListener("click", function () {
+        console.log(3);
+      });
+
+      // FastClick简单实现
+      var targetElement = null;
+      document.body.addEventListener("touchstart", function () {
+        // 记录点击的元素
+        targetElement = event.target;
+      });
+      // https://www.jianshu.com/p/5f9027722204
+      document.body.addEventListener("touchend", function (event) {
+        // 阻止默认事件（屏蔽之后的click事件）
+        event.preventDefault();
+
+        // 合成click事件
+        var clickEvent = document.createEvent("Event");
+        clickEvent.initEvent("click", true, true);
+        targetElement.dispatchEvent(clickEvent);
+      });
+    </script>
+  </body>
+</html>
